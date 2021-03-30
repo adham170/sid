@@ -16,7 +16,7 @@ function checkMail($mail){
 $mail = strtolower($mail);
         if(mb_substr($mail, -10) === '@gmail.com'){
             return checkGmail($mail);
-        } elseif(preg_match('/(live|hotmail|outlook)\.(.*)/', $mail)){
+        } elseif(preg_match('/(live|hotmail|outlook|outlook.sa)\.(.*)/', $mail)){
             return checkHotmail(newURL(),$mail);
         } elseif(strpos($mail, 'yahoo.com')){
             return checkYahoo($mail);
@@ -220,218 +220,39 @@ function checkGmail($mail){
     if(strpos($mail, ' ') or strpos($mail, '+')){
         return false;
     }
-        $fromemail = 'javaniq2@gmail.com';
-        $details = '';
-
-        // Remove all illegal characters from email
-        $email = filter_var($mail, FILTER_SANITIZE_EMAIL);
-        // Validate e-mail
-        if (filter_var($mail, FILTER_VALIDATE_EMAIL))
-        {
-            // Get the domain of the email recipient
-            $email_arr = explode('@', $mail);
-                $domain = array_slice($email_arr, -1);
-                $domain = $domain[0];
-
-                // Trim [ and ] from beginning and end of domain string, respectively
-                $domain = ltrim($domain, '[');
-                $domain = rtrim($domain, ']');
-
-                if ('IPv6:' == substr($domain, 0, strlen('IPv6:')))
-                {
-                    $domain = substr($domain, strlen('IPv6') + 1);
-                }
-
-                $mxhosts = array();
-                // Check if the domain has an IP address assigned to it
-                if (filter_var($domain, FILTER_VALIDATE_IP))
-                {
-                    $mx_ip = $domain;
-                }
-                else
-                {
-                    // If no IP assigned, get the MX records for the host name
-                    getmxrr($domain, $mxhosts, $mxweight);
-                }
-
-                if (!empty($mxhosts))
-                {
-                    $mx_ip = $mxhosts[array_search(min($mxweight) , $mxhosts) ];
-                }
-                else
-                {
-                    // If MX records not found, get the A DNS records for the host
-                    if (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-                    {
-                        $record_a = dns_get_record($domain, DNS_A);
-                        // else get the AAAA IPv6 address record
-                        
-                    }
-                    elseif (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-                    {
-                        $record_a = dns_get_record($domain, DNS_AAAA);
-                    }
-
-                    if (!empty($record_a))
-                    {
-                        $mx_ip = $record_a[0]['ip'];
-                    }
-                    else
-                    {
-                        $mxhosts = array();
-                        // Check if the domain has an IP address assigned to it
-                        $domain = 'mail.' . $domain;
-                        if (filter_var($domain, FILTER_VALIDATE_IP))
-                        {
-                            $mx_ip = $domain;
-                        }
-                        else
-                        {
-                            // If no IP assigned, get the MX records for the host name
-                            getmxrr($domain, $mxhosts, $mxweight);
-                        }
-
-                        if (!empty($mxhosts))
-                        {
-                            $mx_ip = $mxhosts[array_search(min($mxweight) , $mxhosts) ];
-                        }
-                        else
-                        {
-                            // If MX records not found, get the A DNS records for the host
-                            if (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-                            {
-                                $record_a = dns_get_record($domain, DNS_A);
-                                // else get the AAAA IPv6 address record
-                                
-                            }
-                            elseif (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-                            {
-                                $record_a = dns_get_record($domain, DNS_AAAA);
-                            }
-
-                            if (!empty($record_a))
-                            {
-                                $mx_ip = $record_a[0]['ip'];
-                            }
-                            else
-                            {
-                                $domain = 'email.' . $domain;
-                                $mxhosts = array();
-                                // Check if the domain has an IP address assigned to it
-                                if (filter_var($domain, FILTER_VALIDATE_IP))
-                                {
-                                    $mx_ip = $domain;
-                                }
-                                else
-                                {
-                                    // If no IP assigned, get the MX records for the host name
-                                    getmxrr($domain, $mxhosts, $mxweight);
-                                }
-
-                                if (!empty($mxhosts))
-                                {
-                                    $mx_ip = $mxhosts[array_search(min($mxweight) , $mxhosts) ];
-                                }
-                                else
-                                {
-                                    // If MX records not found, get the A DNS records for the host
-                                    if (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
-                                    {
-                                        $record_a = dns_get_record($domain, DNS_A);
-                                        // else get the AAAA IPv6 address record
-                                        
-                                    }
-                                    elseif (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
-                                    {
-                                        $record_a = dns_get_record($domain, DNS_AAAA);
-                                    }
-
-                                    if (!empty($record_a))
-                                    {
-                                        $mx_ip = $record_a[0]['ip'];
-                                    }
-                                    else
-                                    {
-                                        // Exit the program if no MX records are found for the domain host
-                                        $result = 'fail';
-                                        $details .= 'No suitable MX records found';
-
-                                        return false;
-                                    }
-                                }
-
-                            }
-                        }
-
-                    }
-                }
-
-                // Open a socket connection with the hostname, smtp port 25
-                $connect = @fsockopen($mx_ip, 25);
-
-                if ($connect)
-                {
-
-                    // Initiate the Mail Sending SMTP transaction
-                    if (preg_match('/^220/i', $out = fgets($connect, 1024)))
-                    {
-
-                        // Send the HELO command to the SMTP server
-                        fputs($connect, "HELO $mx_ip\r\n");
-                        $out = fgets($connect, 1024);
-
-                        // Send an SMTP Mail command from the sender's email address
-                        fputs($connect, "MAIL FROM: <$fromemail>\r\n");
-                        $from = fgets($connect, 1024);
-
-                        // Send the SCPT command with the recepient's email address
-                        fputs($connect, "RCPT TO: <$mail>\r\n");
-                        $to = fgets($connect, 1024);
-                        $details .= $to . "\n";
-                        $test = $to;
-
-                        // Close the socket connection with QUIT command to the SMTP server
-                        fputs($connect, 'QUIT');
-                        fclose($connect);
-                    }
-                }
-                if (!strpos($details, 'OK'))
-                {
-$ch = curl_init(); 
-curl_setopt($ch, CURLOPT_URL, "http://abbas.zzz.com.ua/JA/index.php?email=".$email_arr[0]."@gmail.com");  
-curl_setopt($ch, CURLOPT_TCP_NODELAY, 1); 
-curl_setopt($ch, CURLOPT_FORBID_REUSE, 0); 
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
-curl_setopt($ch, CURLOPT_TIMEOUT, 10); 
-curl_setopt($ch, CURLOPT_ENCODING, null); 
-curl_setopt($ch, CURLOPT_HTTPHEADER, explode("\n",'Host: abbas.zzz.com.ua 
-Connection: keep-alive 
-Cache-Control: max-age=0 
-Save-Data: on 
-Upgrade-Insecure-Requests: 1 
-User-Agent: Mozilla/5.0 (Linux; Android 9; SM-A730F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.110 Mobile Safari/537.36 
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 
-Accept-Encoding: gzip, deflate 
-Accept-Language: en-US,en;q=0.9,ar;q=0.8 
-Cookie: _ga=GA1.3.1096334772.1604396434; _gid=GA1.3.596060245.1604396434')); 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
-$res = curl_exec($ch); 
-curl_close($ch);
-                        if(strstr($res,'{"status":"SUCCESS"}')){
-return true;
-}else{
-return false;
+  $mail = preg_replace('/@(.*)/', '',$mail);
+   $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL,'https://accounts.google.com/InputValidator?resource=SignUp&service=mail');
+  curl_setopt($ch,CURLOPT_HTTPHEADER, [
+    'User-Agent: Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16',
+'Content-Type: application/json; charset=utf-8',
+'Host: accounts.google.com',
+'Expect: 100-continue',
+    ]);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch,CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_ENCODING , "");
+  // echo $mail;
+  $fields = '{"input01":{"Input":"GmailAddress","GmailAddress":"'.$mail.'","FirstName":"'.str_shuffle('javaniq2@gmail.com').'","LastName":"'.str_shuffle('javaniq2@gmail.com').'"},"Locale":"en"}';
+  curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
+  $res = curl_exec($ch);
+  curl_close($ch);
+  $s =  json_decode($res);
+  if(isset($s->input01)){
+  if(isset($s->input01->Valid)){
+      if($s->input01->Valid == 'true'){
+          return true;
+      } else {
+          return false;
+      }
+  } else {
+      return false;
+  }
+  } else {
+      return false;
+  }
 }
-                }
-                else
-                {
-                    return false;
-                }
-            
-        }
-
-    }
 function checkHotmail($url,$mail){
     $mail = trim($mail);
     if(strpos($mail, ' ') or strpos($mail, '+')){
