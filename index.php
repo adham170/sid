@@ -53,7 +53,7 @@ X-IG-Connection-Type: WIFI
 X-IG-Capabilities: 3Ro=
 Accept-Language: en-US
 Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-User-Agent: Instagram 9.7.0 Android (28/9; 420dpi; 1080x2131; samsung; SM-A505F; a50; exynos9610; en_US)
+User-Agent: Instagram 145.0.0.32.119 Android (28/9; 320dpi; 720x1544; OPPO; CPH2015; OP4C7D; mt6765; en-US)
 Accept-Encoding: gzip, deflate
 t'));
 curl_setopt($search,CURLOPT_POST, 1);
@@ -130,18 +130,18 @@ function checkRU($mail){
         return false;
     }
   $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL,"https://auth.mail.ru/api/v1/pushauth/info?login=".urlencode($mail)."&_=1580336451166");
+  curl_setopt($ch, CURLOPT_URL,"https://auth.mail.ru/api/v1/pushauth/info?login=".urlencode($mail)."&_=1616433142707");
   curl_setopt($ch,CURLOPT_HTTPHEADER, [
-    'Host: recostream.go.mail.ru',
+    'Host: account.mail.ru',
 'Connection: keep-alive',
-'User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36',
+'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36',
 'Accept: */*',
-'Origin: https://mail.ru',
+'Origin: https://account.mail.ru',
 'Sec-Fetch-Site: same-site',
 'Sec-Fetch-Mode: cors',
-'Referer: https://mail.ru/',
+'Referer: https://account.mail.ru/login',
 'Accept-Encoding: gzip, deflate, br',
-'Accept-Language: en-US,en;q=0.9,ar;q=0.8'
+'Accept-Language: en-US,en;q=0.9'
     ]);
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -163,7 +163,7 @@ $user = $mail;
 @mkdir("Info");
 $c = curl_init("https://login.yahoo.com/"); 
 curl_setopt($c, CURLOPT_FOLLOWLOCATION, true); 
-curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"); 
+curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"); 
 curl_setopt($c, CURLOPT_REFERER, 'https://www.google.com'); 
 curl_setopt($c, CURLOPT_ENCODING, 'gzip, deflate, br');  
 curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);  
@@ -189,9 +189,9 @@ $config = trim($data['config']);
 $sesindex = trim($data['sesindex']); 
 $header = array(); 
 $header[] = "Host: login.yahoo.com"; 
-$header[] = "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0"; 
+$header[] = "User-Agent: Mozilla/5.0 (X11; Linux x86_64:87.0) Gecko/20100101 Firefox/87.0"; 
 $header[] = "Accept: */*"; 
-$header[] = "Accept-Language: en-US,en;q=0.5"; 
+$header[] = "Accept-Language: en-US,en;q=0.9"; 
 $header[] = "content-type: application/x-www-form-urlencoded; charset=UTF-8"; 
 $header[] = "X-Requested-With: XMLHttpRequest"; 
 $header[] = "Referer: https://login.yahoo.com/"; 
@@ -199,7 +199,7 @@ $header[] = "Connection: keep-alive";
 $data = "acrumb=$acrumb&sessionIndex=$sesindex&username=".urlencode($user)."&passwd=&signin=Next"; 
 $c = curl_init("https://login.yahoo.com/"); 
 curl_setopt($c, CURLOPT_FOLLOWLOCATION, true); 
-curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"); 
+curl_setopt($c, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"); 
 curl_setopt($c, CURLOPT_REFERER, 'https://login.yahoo.com/'); 
 curl_setopt($c, CURLOPT_ENCODING, 'gzip, deflate, br');  
 curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);  
@@ -264,23 +264,23 @@ function checkHotmail($url,$mail){
   curl_setopt($ch,CURLOPT_HTTPHEADER, [
     'accept: application/json',
 'accept-encoding: gzip, deflate, br',
-'accept-language: en-US,en;q=0.9,ar;q=0.8',
+'accept-language: en-US,en;q=0.9',
 'client-request-id: e50b9d86940a4a6b806f141aeb87c2be',
 'content-type: application/json; charset=UTF-8',
-'cookie: mkt=en-GB; MSCC=1565316440; optimizelyEndUserId=oeu1578914839745r0.28780916970876746; wlidperf=FR=L&ST=1578914863298; logonLatency=LGN01=637153910513160953; uaid=e50b9d86940a4a6b806f141aeb87c2be; amsc=LDSu01eN1p8mu/aQOR8E/JsrWRw2umolJ57H96YKK9t9GpXT/1+TnnHT5teMGz0XmgPXf4UZumsU54kipsswO6VwZggyEEZkxrR8SJd5U3Bru+OEs+9IlLfml8nsNJ3ejH7piSM6y5EfybxtuLMV6SZZxPrFEODePzRujEx/dSV7jpiSYTNk/oajPVQIoZbABA+Hr8QjedZ5390TM7sQmrIwwSPfbUP9vTrTPwnm6GAsbf1k90qWSLMaldKhMPKz1IZCPvKBdWxmfda1hcHSkitzm2byDrC8a0LpF2XtGKG1rZ9S+WvSILthbvLn7tHD:2:3c; MSPRequ=id=N&lt=1579804236&co=0; OParams=11DQFpxS7pzYB5u6z67WXLWoJZxIv4EoI07SIv9NF400Ml6NW3t6RoWfW5Hr7lizMq9bTQDRrsBBlbQXkVL!Jzo6knJIEJdFbUDS!Cq1zNJJNK1ehiYyB5fMyO7bnj7Dfz!6mDuk2OShJVVlatli5JeYXDDFRljVvQzkJ91cXbHLJoRP9A!EbyBF3boCkZ7s9f*ePQZWGwqnAeCz3sclT68b4ntJXMLTAqi4CgcEiEE9XjSekdGg2q!pHh7IcjwLKjvusYzdiaK6axwAp4hw35vvcsyA4UOD26uE04LKjAFPIDZcXmrqzHNjklndRTqAp!1PMSFEvdlrAa9FyrbN1f6CA$; MSPOK=$uuid-84fae358-0e4d-4cbc-9401-c4c0d1dfc0b8$uuid-2dfff29d-11fd-4e53-85a7-8d3cff5e2754$uuid-b7c92f16-b89a-445d-95a9-cc1c6686aab2',
+'cookie: cltm=nw:4G; uaid=457affaeffb440fb8b1439ec1f9d4ddb; MSPRequ=id=N&lt=1616977252&co=0; MSCC=197.32.96.90-EG; OParams=11DQFJg263z!aYJTnZx0NLqZxQ6CcuVj8Tz5g0u0CRI3OmHI9YoWdsFsWR7lzizLTAOItHqxPIwzhIw22UvBTQWON1OPD4NHSkOfTk7EkUCjvI7mmLy0aBvT8ye7BgSlzC0Zvf5Zxnf1Svyp7bG5p9gJOV0Gk70CC8AyNrshMgzhItfKc81J!Wgt3jpfl!GaHVXhXFo1bVbb2Z3mLAdaX4CLkrWUWQqbggeWY7t3zUk2UnmgzPVNBe6Ojf2S21h7KOmap8XeiooLyTWwTzF8TQKCt19nltv7tdUT*yUOXJh4*xURQFKnrvRdKl2yePzo60lxAnZAR52pHU82pwDMbydn165pOolUf9RMeh4aU23q5IsdWJ8q!fOMEmqmqLolOKtR7Hzph9do8ROnwfk6izFPWfEtLdo9iPVIJSOCFMO6lMyhSIGT87SHH4ZFxw*y!hOeviSa8zLdKcMD0LbKF!1G3NkwpwQC8llXcnnylJwFBqnXf!LAGQGsKig4xTOJ4iQWTPINtTTcLTXaNOjoi6YxHRp*rPd7eSX69OftGQZRN1175nXyieEid8bU2B55Ox8M8cgD7zGZUD!umKtesMbnqbPdNDlyJx0WApicZkLpoZnA4ttleomp7StEyvB*s88VkhqqCz*moCIVQflVn9COuPKsuulUdAXOkDaKfEXVdOaswz2CnJuJhqSoB4BywNh4ztG7uiqrRiUjVSBqE4cjQXZ066zZ4nfT!7!28kFM!AaYIsrk2Q4FR62l23!qO0QA$$; MSPOK=$uuid-e599ff9a-86ff-4d8a-8711-8d404f92e6e3$uuid-fa115198-faa2-4d3f-b2a3-df65981dcf02$uuid-04ff4b80-a445-4c3d-848e-4b7f484d1a73$uuid-3eced084-4f4c-4e2b-ada0-9e42a5229937$uuid-9956c604-c0b1-4950-babd-364e726ec123$uuid-ae1d8b03-8223-45aa-826f-d4be78e1946c$uuid-a74b9dc6-49c7-4c74-b6b9-190a50825b5a$uuid-f1ba3144-a8fe-4f3a-b9cb-cca307d2888b$uuid-96394b0f-08bc-4eef-a465-23b147e8ce4a',
 'hpgact: 0',
 'hpgid: 33',
 'origin: https://login.live.com',
 'referer: https://login.live.com/',
 'sec-fetch-mode: cors',
 'sec-fetch-site: same-origin',
-'user-agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36'
     ]);
   curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
   curl_setopt($ch, CURLOPT_ENCODING , "");
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($ch,CURLOPT_POST, 1);
-  curl_setopt($ch,CURLOPT_POSTFIELDS, '{"username":"'.$mail.'","uaid":"'.$uaid.'","isOtherIdpSupported":false,"checkPhones":true,"isRemoteNGCSupported":true,"isCookieBannerShown":false,"isFidoSupported":true,"forceotclogin":false,"otclogindisallowed":true,"isExternalFederationDisallowed":false,"isRemoteConnectSupported":false,"federationFlags":3,"flowToken":"DdMUDCNyFcwT9VK5vlBBCGF5VYFUBuVVVK2FCJkTvdIr8vao!78DWHV1d5iJQAlaBgKQtik4V0TTdj0gqiYx89skmL*Ir9FvzAs8FIul6MJmsHl*WMZuh0WOAYNDzGgH!5A9TURocDSg*qbkZVrdh1ZG0j5NWvtsfdqMRYbAqujacfOSUA2ZuxmvSFlYz3dxOG3DhusRzPYqFqfWhc3xLxFDzf4NhhCCPTdQ3BQfvcZ9yE0KqqOWnDllRJvXO!tJeA$$"}');
+  curl_setopt($ch,CURLOPT_POSTFIELDS, '{"username":"'.$mail.'","uaid":"'.$uaid.'","isOtherIdpSupported":false,"checkPhones":false,"isRemoteNGCSupported":true,"isCookieBannerShown":false,"isFidoSupported":false,"forceotclogin":false,"otclogindisallowed":false,"isExternalFederationDisallowed":false,"isRemoteConnectSupported":false,"federationFlags":3,"isSignup":false,"flowToken":"DVUr0iIwWo5CnCsPK!!dVoPDF3F5S0h5JcmehX1iE68mOK0Tol1u2auVCMI6IAJqjHPqtk*t0fNYQLJ0SKtpWO1t1d4KIZ0Nw0neJQB6jFwvtqj7ZMcX515ZxmfPsJtv6D3kwSeYrAMcZpsjV9KpigNjP!Mg*fZF9d6TCIBHvu!CXCmEbRIiGrq*n*995KLFkumG10h*7tuutVVBy182Y6pJkB!ZXtmJWJSiakAlFWxsVsHaQrVFRnCPr2Wr6QpIJA$$"}');
   $res = curl_exec($ch);
   curl_close($ch);
   $res = json_decode($res)->IfExistsResult;
